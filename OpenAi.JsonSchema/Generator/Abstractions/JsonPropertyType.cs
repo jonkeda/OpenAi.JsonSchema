@@ -7,7 +7,7 @@ namespace OpenAi.JsonSchema.Generator.Abstractions;
 
 [DebuggerDisplay("{ToString(),nq}")]
 public class JsonPropertyType {
-    private static readonly PropertyInfo MemberNameProperty = typeof(JsonPropertyInfo).GetProperty("MemberName", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new Exception("Failed to access JsonTypeInfo.MemberName using reflection!");
+    private static readonly PropertyInfo MemberNameProperty = typeof(JsonPropertyInfo).GetProperty("MemberName", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new Exception("Failed to access JsonPropertyInfo.MemberName using reflection!");
 
     private readonly JsonNullableInfo? _nullableInfo;
     private readonly JsonTypeResolver _resolver;

@@ -20,7 +20,7 @@ public class DefaultSchemaGenerator(ISchemaBuilder? builder = null) : ISchemaGen
         options ??= JsonSchemaOptions.Default;
 
         var resolver = new JsonTypeResolver(options.JsonSerializerOptions);
-        var context = new SchemaBuildContext(Builder, options);
+        var context = new SchemaBuildContext(resolver, options);
 
         var info = resolver.GetTypeInfo(type);
         var root = Builder.BuildSchema(info, context);

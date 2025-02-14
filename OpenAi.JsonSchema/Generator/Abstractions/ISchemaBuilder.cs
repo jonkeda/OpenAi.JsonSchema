@@ -3,15 +3,18 @@
 
 namespace OpenAi.JsonSchema.Generator.Abstractions;
 
-public interface ISchemaBuilder {
+public interface ISchemaBuilder : IValueSchemaBuilder, IObjectSchemaBuilder, IArraySchemaBuilder {
     public SchemaNode BuildSchema(JsonType type, SchemaBuildContext context);
 }
 
-public interface IObjectSchemaBuilder : ISchemaBuilder {
+public interface IObjectSchemaBuilder {
+    public SchemaNode BuildObjectSchema(JsonType type, SchemaBuildContext context);
 }
 
-public interface IArraySchemaBuilder : ISchemaBuilder {
+public interface IArraySchemaBuilder {
+    public SchemaNode BuildArraySchema(JsonType type, SchemaBuildContext context);
 }
 
-public interface IValueSchemaBuilder : ISchemaBuilder {
+public interface IValueSchemaBuilder {
+    public SchemaNode BuildValueSchema(JsonType type, SchemaBuildContext context);
 }

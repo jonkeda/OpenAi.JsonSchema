@@ -1,0 +1,155 @@
+{
+  "type": "object",
+  "properties": {
+    "Age": {
+      "type": "integer"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "Children": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Child"
+              },
+              {
+                "$ref": "#/$defs/StepChild"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "Age",
+    "Name",
+    "Children"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Child": {
+      "type": "object",
+      "properties": {
+        "$type": {
+          "type": "string",
+          "const": "child"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Age": {
+          "type": "integer"
+        },
+        "BirthDate": {
+          "type": "string",
+          "description": "date-time"
+        },
+        "Parent": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#"
+            }
+          ]
+        },
+        "Siblings": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Child"
+              },
+              {
+                "$ref": "#/$defs/StepChild"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "$type",
+        "Name",
+        "Age",
+        "BirthDate",
+        "Parent",
+        "Siblings"
+      ],
+      "additionalProperties": false
+    },
+    "StepChild": {
+      "type": "object",
+      "properties": {
+        "$type": {
+          "type": "string",
+          "const": "step-child"
+        },
+        "StepSiblings": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Child"
+              },
+              {
+                "$ref": "#/$defs/StepChild"
+              }
+            ]
+          }
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Age": {
+          "type": "integer"
+        },
+        "BirthDate": {
+          "type": "string",
+          "description": "date-time"
+        },
+        "Parent": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#"
+            }
+          ]
+        },
+        "Siblings": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Child"
+              },
+              {
+                "$ref": "#/$defs/StepChild"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "$type",
+        "StepSiblings",
+        "Name",
+        "Age",
+        "BirthDate",
+        "Parent",
+        "Siblings"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

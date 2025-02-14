@@ -25,6 +25,7 @@ public class EnumTests(ITestOutputHelper output) {
         var json = schema.ToJson();
         output.WriteLine(json);
         Assert.NotNull(json);
+        Helper.Assert(json);
     }
 
 
@@ -46,6 +47,7 @@ public class EnumTests(ITestOutputHelper output) {
         var json = schema.ToJson();
         output.WriteLine(json);
         Assert.NotNull(json);
+        Helper.Assert(json);
     }
 
 
@@ -67,5 +69,6 @@ public class EnumTests(ITestOutputHelper output) {
         var json = schema.ToJson();
         output.WriteLine(json);
         Assert.NotNull(json);
+        Helper.Assert(json);
     }
 }

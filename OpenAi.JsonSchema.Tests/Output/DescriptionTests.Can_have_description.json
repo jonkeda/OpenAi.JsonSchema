@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "description": "A document",
+  "properties": {
+    "Id": {
+      "type": "integer",
+      "description": "Id of the document"
+    },
+    "Name": {
+      "type": "string",
+      "description": "Document name"
+    },
+    "Lines": {
+      "type": "array",
+      "description": "Text lines of the document",
+      "items": {
+        "type": "object",
+        "description": "A line of text in a document",
+        "properties": {
+          "Number": {
+            "type": "integer",
+            "description": "Line number"
+          },
+          "Text": {
+            "type": "string",
+            "description": "Line text"
+          }
+        },
+        "required": [
+          "Number",
+          "Text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Next": {
+      "description": "Next document in order",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#"
+        }
+      ]
+    },
+    "Prev": {
+      "description": "Prev document in order",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#"
+        }
+      ]
+    }
+  },
+  "required": [
+    "Id",
+    "Name",
+    "Lines"
+  ],
+  "additionalProperties": false
+}

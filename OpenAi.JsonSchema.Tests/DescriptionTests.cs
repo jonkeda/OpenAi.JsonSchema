@@ -35,5 +35,6 @@ public class DescriptionTests(ITestOutputHelper output) {
         var json = schema.ToJson();
         output.WriteLine(json);
         Assert.NotNull(json);
+        Helper.Assert(json);
     }
 }

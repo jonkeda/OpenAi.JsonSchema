@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -43,5 +44,20 @@ public static class Helper {
     public static JsonNode GenerateJsonNode(Type type)
     {
         return Generate(type).ToJsonNode();
+    }
+
+    public static void Assert(string actual, [CallerFilePath] string path = null!, [CallerMemberName] string name = null!)
+    {
+        var fileName = path.Split("OpenAi.JsonSchema.Tests")[1].TrimStart('\\', '/');
+        var outFileName = Path.Combine(AppContext.BaseDirectory, "../../../Output/", $"{Path.ChangeExtension(fileName, null)}.{name}.json");
+        if (File.Exists(outFileName)) {
+            var expected = File.ReadAllText(outFileName);
+            Xunit.Assert.Equal(expected, actual);
+        }
+        else {
+            Directory.CreateDirectory(Path.GetDirectoryName(outFileName)!);
+            File.WriteAllText(outFileName, actual);
+            Xunit.Assert.Fail("Could not verify output as the file was not there.\n - The file is now created with current output!");
+        }
     }
 }

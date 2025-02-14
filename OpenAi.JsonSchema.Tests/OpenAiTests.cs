@@ -17,6 +17,7 @@ public class OpenAiTests(ITestOutputHelper output) {
         var json = schema.ToJson();
         output.WriteLine(json);
         Assert.NotNull(json);
+        Helper.Assert(json);
     }
 
 
@@ -30,6 +31,7 @@ public class OpenAiTests(ITestOutputHelper output) {
         var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
         output.WriteLine(json);
         Assert.NotNull(json);
+        Helper.Assert(json);
     }
 
 
@@ -43,5 +45,6 @@ public class OpenAiTests(ITestOutputHelper output) {
         });
 
         output.WriteLine(error.ToString());
+        Helper.Assert(error.ToString());
     }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "default",
+        "pascal_case",
+        "camel_case",
+        "snake_case",
+        "kebab_case"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "status"
+  ],
+  "additionalProperties": false
+}

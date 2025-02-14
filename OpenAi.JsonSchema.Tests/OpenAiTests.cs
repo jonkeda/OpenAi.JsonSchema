@@ -45,6 +45,6 @@ public class OpenAiTests(ITestOutputHelper output) {
         });
 
         output.WriteLine(error.ToString());
-        Helper.Assert(error.ToString());
+        Helper.Assert($"{error.GetType().FullName}: {error.Message}");
     }
 }

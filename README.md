@@ -1,6 +1,6 @@
 # OpenAi JsonSchema
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/r-Larch/OpenAi.JsonSchema/ci.yml) ![NuGet Version](https://img.shields.io/nuget/v/LarchSys.OpenAi.JsonSchema)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/r-Larch/OpenAi.JsonSchema/ci.yml) [![NuGet Version](https://img.shields.io/nuget/v/LarchSys.OpenAi.JsonSchema)](https://www.nuget.org/packages/LarchSys.OpenAi.JsonSchema)
 
 **OpenAi-JsonSchema** is a lightweight library for generating valid JSON Schema for OpenAI's Structured Outputs feature, ensuring compatibility with OpenAI's JSON Schema subset. It simplifies the creation of structured outputs for OpenAI models, following the schema generation guidelines provided by OpenAI.
 
@@ -12,6 +12,67 @@
 - Ensures compatibility with OpenAI's JSON Schema format for structured outputs.
 - **Polymorphism support** using `JsonPolymorphicAttribute` and `JsonDerivedTypeAttribute` to generate schemas for polymorphic types.
 - Supports `JsonIgnoreAttribute` and all other `System.Text.Json` attributes for flexible schema customization.
+
+### Static Schema Generation
+
+It supports generating a schema from a `class`, `record`, `struct`:
+
+```csharp
+var resolver = new DefaultSchemaGenerator();
+var schema = resolver.Generate<MyModel>(options);
+```
+
+### Fluent Schema Generation
+
+It supports generating a dynamic custom schema:
+- Enables dynamic descriptions for properties.
+- Allows picking properties form a type without including all properties in schema.
+- Allows defining a schema for `JsonElement`, `JsonNode` or `object` typed properties.
+- And much more..
+
+```csharp
+var generator = new DefaultSchemaGenerator();
+var schema1 = generator.Build(new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptionsSnakeCase), _ => _
+    .Object("A person", _ => _
+        .Property<string>("fullName", "Firstname and Lastname")
+        .Property("metaData", "Some Metadata", _ => _
+            .Object(_ => _
+                .Property("type", _ => _.Const("meta"))
+                .Property<string>("author", "Author of the document")
+                .Property<DateTime>("published", "published date")
+            )
+        )
+        .Property("extra", "Some Extra", _ => _
+            .AnyOf(
+                _ => _.Object<Person>(),
+                _ => _.Object<Organization>()
+            )
+        )
+    )
+);
+
+var schema2 = generator.Build(new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptions), _ => _
+    .Object<Document>("A document", _ => _
+        .Property(_ => _.Id, "Id of the document")
+        .Property(_ => _.Name, "Document Name")
+        // Metadata is of type JsonElement:
+        .Property(_ => _.Metadata, "Some Metadata", _ => _
+            .AnyOf(
+                _ => _.Object(_ => _
+                    .Property("type", _ => _.Const("version-1"))
+                    .Property<string>("author", "Author of the document")
+                    .Property<DateTime>("published", "published date")
+                ),
+                _ => _.Object(_ => _
+                    .Property("type", _ => _.Const("version-2"))
+                    .Property<string>("publisher", "Author of the document")
+                    .Property<DateTime>("created", "created date")
+                ),
+            )
+        )
+    )
+);
+```
 
 ## Installation
 

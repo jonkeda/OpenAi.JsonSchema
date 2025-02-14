@@ -64,6 +64,7 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
         var value = JsonSerializer.SerializeToNode(schema.Value, options.JsonSerializerOptions);
 
         var node = new JsonObject {
+            ["type"] = schema.Type,
             ["const"] = value
         };
 

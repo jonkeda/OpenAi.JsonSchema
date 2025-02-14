@@ -7,13 +7,21 @@ namespace OpenAi.JsonSchema.Generator;
 public class DefaultValueSchemaBuilder() : IValueSchemaBuilder {
     public virtual SchemaNode BuildSchema(JsonType info, SchemaBuildContext context)
     {
+        var node = BuildValueNode(info, context);
+
+        if (info.Value is { } value) {
+            return new SchemaConstNode(node.Type, value);
+        }
+
+        return node;
+    }
+
+    public virtual SchemaValueNode BuildValueNode(JsonType info, SchemaBuildContext context)
+    {
         var type = info.Type;
         var nullable = info.Nullable is true;
 
-        if (info.Value is { } value) {
-            return new SchemaConstNode(value);
-        }
-        else if (type == typeof(string) || type == typeof(char)) {
+        if (type == typeof(string) || type == typeof(char)) {
             return new SchemaValueNode("string", nullable);
         }
         else if (type == typeof(int) ||

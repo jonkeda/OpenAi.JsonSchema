@@ -18,6 +18,10 @@ public abstract class SchemaVisitor {
     {
     }
 
+    public virtual void Visit(SchemaAnyNode schema)
+    {
+    }
+
     public virtual void Visit(SchemaValueNode schema)
     {
     }

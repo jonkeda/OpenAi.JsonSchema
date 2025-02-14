@@ -36,6 +36,12 @@ public class OpenAiSchemaValidator : SchemaValidator {
             base.Visit(schema);
         }
 
+        public override void Visit(SchemaAnyNode schema)
+        {
+            Errors.Add($"Unsupported: 'any' SupportedTypes: {string.Join(", ", SupportedTypes)}");
+            base.Visit(schema);
+        }
+
         public override void Visit(SchemaValueNode schema)
         {
             if (!SupportedTypes.Contains(schema.Type)) {

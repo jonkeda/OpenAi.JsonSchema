@@ -1,0 +1,130 @@
+﻿{
+  "type": "object",
+  "description": "A document",
+  "properties": {
+    "Id": {
+      "type": "integer",
+      "description": "Id of the document"
+    },
+    "Name": {
+      "type": "string",
+      "description": "Document Name"
+    },
+    "Lines": {
+      "type": "array",
+      "description": "Text lines of the document",
+      "items": {
+        "type": "object",
+        "description": "A line of text in a document",
+        "properties": {
+          "Number": {
+            "type": "integer",
+            "description": "Line Number"
+          },
+          "Text": {
+            "type": "string",
+            "description": "Line text"
+          }
+        },
+        "required": [
+          "Number",
+          "Text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Next": {
+      "description": "Next document in order",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#"
+        }
+      ]
+    },
+    "Prev": {
+      "description": "Prev document in order",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#"
+        }
+      ]
+    },
+    "Metadata": {
+      "type": "object",
+      "description": "Some Metadata",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "meta"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the document"
+        },
+        "published": {
+          "type": "string",
+          "description": "published date"
+        }
+      },
+      "required": [
+        "type",
+        "author",
+        "published"
+      ],
+      "additionalProperties": false
+    },
+    "Extra": {
+      "description": "Some Extra",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string"
+            },
+            "Age": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "Name",
+            "Age"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string"
+            },
+            "Address": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "Name",
+            "Address"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "Id",
+    "Name",
+    "Lines",
+    "Next",
+    "Prev",
+    "Metadata",
+    "Extra"
+  ],
+  "additionalProperties": false
+}

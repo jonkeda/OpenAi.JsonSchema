@@ -4,8 +4,10 @@ using OpenAi.JsonSchema.Nodes.Abstractions;
 
 namespace OpenAi.JsonSchema.Internals;
 
-internal class SchemaRefIncrementVisitor : SchemaVisitor {
-    private readonly HashSet<SchemaRefValue> _seen = [];
+internal class SchemaRefCountVisitor : SchemaVisitor {
+    public static SchemaRefCountVisitor Instance { get; } = new();
+
+    private readonly HashSet<SchemaNode> _seen = [];
 
     public override void Visit(SchemaRootNode schema)
     {
@@ -14,8 +16,9 @@ internal class SchemaRefIncrementVisitor : SchemaVisitor {
 
     public override void Visit(SchemaRefNode schema)
     {
-        if (_seen.Add(schema.Ref)) {
-            schema.Ref.Count++;
+        schema.Ref.Count++;
+        if (_seen.Add(schema.Ref.Value)) {
+            Visit(schema.Ref.Value);
         }
     }
 }

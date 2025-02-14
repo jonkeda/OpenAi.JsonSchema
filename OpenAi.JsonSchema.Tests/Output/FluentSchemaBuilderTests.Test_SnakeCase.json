@@ -1,0 +1,77 @@
+﻿{
+  "type": "object",
+  "description": "A person",
+  "properties": {
+    "fullName": {
+      "type": "string",
+      "description": "Firstname and Lastname"
+    },
+    "metaData": {
+      "type": "object",
+      "description": "Some Metadata",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "meta"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the document"
+        },
+        "published": {
+          "type": "string",
+          "description": "published date"
+        }
+      },
+      "required": [
+        "type",
+        "author",
+        "published"
+      ],
+      "additionalProperties": false
+    },
+    "extra": {
+      "description": "Some Extra",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "age": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "age"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "address": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "address"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "fullName",
+    "metaData",
+    "extra"
+  ],
+  "additionalProperties": false
+}

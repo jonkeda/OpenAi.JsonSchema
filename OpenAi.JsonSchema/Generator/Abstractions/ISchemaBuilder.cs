@@ -9,6 +9,7 @@ public interface ISchemaBuilder : IValueSchemaBuilder, IObjectSchemaBuilder, IAr
 
 public interface IObjectSchemaBuilder {
     public SchemaNode BuildObjectSchema(JsonType type, SchemaBuildContext context);
+    public PropertySchema BuildPropertySchema(JsonPropertyType property, SchemaBuildContext context);
 }
 
 public interface IArraySchemaBuilder {

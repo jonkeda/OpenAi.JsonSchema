@@ -8,25 +8,17 @@ using OpenAi.JsonSchema.Nodes.Abstractions;
 namespace OpenAi.JsonSchema.Serialization;
 
 internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<JsonNode> {
-    //private int Level { get; set; }
-    //public override JsonNode Transform(SchemaNode schema)
-    //{
-    //    Level++;
-    //    var node = base.Transform(schema);
-    //    node.AsObject()["level"] = JsonValue.Create(Level);
-    //    Level--;
-    //    return node;
-    //}
-
     public override JsonNode Transform(SchemaRootNode schema)
     {
         var root = schema.Root;
+
+        SchemaRefCountVisitor.Instance.Visit(root);
 
         if (root is SchemaRefNode { Ref: { } @ref }) {
             if (options.SchemaRootMode is SchemaRootMode.RootDuplication) {
                 @ref.Count--;
                 root = @ref.Value;
-                new SchemaRefIncrementVisitor().Visit(@ref.Value);
+                SchemaRefRootDuplicationVisitor.Instance.Visit(@ref.Value);
             }
             else if (options.SchemaRootMode is SchemaRootMode.RootRecursion) {
                 @ref.Root = true;
@@ -66,6 +58,17 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
         var node = new JsonObject {
             ["type"] = schema.Type,
             ["const"] = value
+        };
+
+        AddDescription(node, schema.Description);
+
+        return node;
+    }
+
+    public override JsonNode Transform(SchemaAnyNode schema)
+    {
+        var node = new JsonObject {
+            ["type"] = new JsonArray(["number", "string", "boolean", "object", "array", "null"]),
         };
 
         AddDescription(node, schema.Description);

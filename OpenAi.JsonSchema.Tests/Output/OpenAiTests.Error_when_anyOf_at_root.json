@@ -1,7 +1,8 @@
-OpenAi.JsonSchema.Validation.ValidationException: Schema Validation Errors:
+﻿OpenAi.JsonSchema.Validation.ValidationException: Schema Validation Errors:
 - Unsupported 'anyOf' at root
-   at OpenAi.JsonSchema.Generator.DefaultSchemaGenerator.Generate(Type type, JsonSchemaOptions options) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema\Generator\DefaultSchemaGenerator.cs:line 37
-   at OpenAi.JsonSchema.Tests.Models.Helper.Generate(Type type, JsonSchemaOptions options) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema.Tests\Models\Helper.cs:line 39
-   at OpenAi.JsonSchema.Tests.Models.Helper.Generate[T](JsonSchemaOptions options) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema.Tests\Models\Helper.cs:line 31
+   at OpenAi.JsonSchema.Generator.DefaultSchemaGenerator.CreateRootNode(SchemaNode schema, SchemaBuildContext context) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema\Generator\DefaultSchemaGenerator.cs:line 77
+   at OpenAi.JsonSchema.Generator.DefaultSchemaGenerator.Generate(Type type, JsonSchemaOptions options) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema\Generator\DefaultSchemaGenerator.cs:line 29
+   at OpenAi.JsonSchema.Tests.Models.Helper.Generate(Type type, JsonSchemaOptions options) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema.Tests\Models\Helper.cs:line 40
+   at OpenAi.JsonSchema.Tests.Models.Helper.Generate[T](JsonSchemaOptions options) in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema.Tests\Models\Helper.cs:line 32
    at OpenAi.JsonSchema.Tests.OpenAiTests.<>c__DisplayClass4_0.<Error_when_anyOf_at_root>b__0() in C:\Projects\LarchSys\OpenAi.JsonSchema\OpenAi.JsonSchema.Tests\OpenAiTests.cs:line 44
    at Xunit.Assert.RecordException(Action testCode) in /_/src/xunit.assert/Asserts/Record.cs:line 36

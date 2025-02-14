@@ -13,7 +13,7 @@ public class DefinitionCollection {
 
     public virtual SchemaRefValue CreateRef(Type type, SchemaValueNode schema)
     {
-        var value = new SchemaRefValue(schema, _names.GetName(type), Count: 1);
+        var value = new SchemaRefValue(schema, _names.GetName(type), Count: 0);
         _values.Add(type, value);
         return value;
     }
@@ -21,7 +21,6 @@ public class DefinitionCollection {
     public virtual bool TryGetRef(Type key, [NotNullWhen(true)] out SchemaRefValue? schema)
     {
         if (_values.TryGetValue(key, out schema)) {
-            schema.Count++;
             return true;
         }
 

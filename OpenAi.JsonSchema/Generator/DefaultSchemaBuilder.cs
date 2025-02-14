@@ -2,6 +2,8 @@
 using OpenAi.JsonSchema.Nodes;
 using System.ComponentModel;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 
 namespace OpenAi.JsonSchema.Generator;
@@ -69,7 +71,7 @@ public class DefaultSchemaBuilder() : ISchemaBuilder {
         return @ref;
     }
 
-    protected virtual PropertySchema BuildPropertySchema(JsonPropertyType property, SchemaBuildContext context)
+    public virtual PropertySchema BuildPropertySchema(JsonPropertyType property, SchemaBuildContext context)
     {
         var schema = BuildSchema(property.PropertyType, context);
 
@@ -124,6 +126,15 @@ public class DefaultSchemaBuilder() : ISchemaBuilder {
 
     public virtual SchemaNode BuildValueSchema(JsonType info, SchemaBuildContext context)
     {
+        var type = info.Type;
+        if (
+            type == typeof(JsonElement) ||
+            type == typeof(JsonNode) ||
+            type == typeof(object)
+        ) {
+            return new SchemaAnyNode();
+        }
+
         var node = BuildValueNode(info, context);
 
         if (info.Value is { } value) {

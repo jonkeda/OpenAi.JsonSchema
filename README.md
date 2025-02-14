@@ -42,6 +42,16 @@ var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteI
 output.WriteLine(json);
 Assert.NotNull(json);
 
+string response = ChatCompletionWithStructuredOutput(messages: [...], model: "...", schema: schema.ToJsonNode());
+Assert.StartsWith("""{"id":""", response);
+
+// deserialize with JsonOptions used for schema generation:
+var result = JsonSerializer.Deserialize<Document>(response, jsonOptions);
+Assert.NotNull(result);
+Assert.NotNull(result.Name);
+
+// Model definition with descriptions to include in schema:
+
 [Description("A document")]
 public record Document(
     [property: Description("Id of the document")] int Id,

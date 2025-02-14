@@ -35,6 +35,16 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
         return node;
     }
 
+    public SchemaNode Value<T>()
+    {
+        return Schema(Resolve(typeof(T)));
+    }
+
+    public SchemaNode Value(Type type)
+    {
+        return Schema(Resolve(type));
+    }
+
     public SchemaNode Object(Action<IFluentObjectSchemaBuilder> properties)
     {
         var type = Resolve(typeof(object));

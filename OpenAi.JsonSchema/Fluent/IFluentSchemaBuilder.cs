@@ -5,6 +5,9 @@ using OpenAi.JsonSchema.Nodes;
 namespace OpenAi.JsonSchema.Fluent;
 
 public interface IFluentSchemaBuilder {
+    SchemaNode Value<T>();
+    SchemaNode Value(Type type);
+
     SchemaNode Object(string description, Action<IFluentObjectSchemaBuilder> properties);
     SchemaNode Object(Action<IFluentObjectSchemaBuilder> properties);
 

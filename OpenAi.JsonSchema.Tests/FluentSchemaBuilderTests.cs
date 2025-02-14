@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+using OpenAi.JsonSchema.Fluent;
 using OpenAi.JsonSchema.Generator;
+using OpenAi.JsonSchema.Nodes;
 using OpenAi.JsonSchema.Serialization;
 using OpenAi.JsonSchema.Tests.Models;
 using Xunit.Abstractions;
@@ -53,8 +55,9 @@ public class FluentSchemaBuilderTests(ITestOutputHelper output) {
     public void Test_OpenAi()
     {
         var generator = new DefaultSchemaGenerator();
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptions);
 
-        var schema = generator.Build(new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptions), _ => _
+        var schema = generator.Build(options, _ => _
             .Object<FluentDocument>("A document", _ => _
                 .Property(_ => _.Id, "Id of the document")
                 .Property(_ => _.Name, "Document Name")
@@ -94,8 +97,9 @@ public class FluentSchemaBuilderTests(ITestOutputHelper output) {
     public void Test_SnakeCase()
     {
         var generator = new DefaultSchemaGenerator();
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptionsSnakeCase);
 
-        var schema = generator.Build(new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptionsSnakeCase), _ => _
+        var schema = generator.Build(options, _ => _
             .Object("A person", _ => _
                 .Property<string>("fullName", "Firstname and Lastname")
                 .Property("metaData", "Some Metadata", _ => _
@@ -109,6 +113,56 @@ public class FluentSchemaBuilderTests(ITestOutputHelper output) {
                     .AnyOf(
                         _ => _.Object<Person>(),
                         _ => _.Object<Organization>()
+                    )
+                )
+            )
+        );
+
+        var json = schema.ToJson();
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
+
+
+    [Fact]
+    public void Test_Actions()
+    {
+        var generator = new DefaultSchemaGenerator();
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptionsSnakeCase);
+
+        const int numActions = 4;
+        var tools = new[] {
+            new {
+                Name = "Action1",
+                Description = "Action number one",
+                ArgumentsType = typeof(ExampleArguments1)
+            },
+            new {
+                Name = "Action2",
+                Description = "Action number two",
+                ArgumentsType = typeof(ExampleArguments2)
+            }
+        };
+
+        var schema = generator.Build(options, _ => _
+            .Object<ResearchActions>(_ => _
+                .Property(_ => _.Actions, $"List of {numActions} actions to expand the research", _ => _
+                    .Array<ResearchAction>(_ => _
+                        .Property(_ => _.Goal, "First talk about the goal of the research that this query is meant to accomplish, " +
+                                               "then go deeper into how to advance the research once the results are found, mention additional research directions. " +
+                                               "Be as specific as possible, especially for additional research directions.")
+                        .Property(_ => _.Action, "Choose the action to take to accomplish the goal and fill out the arguments.", _ => _
+                            .AnyOf(
+                                tools.Select(Func<IFluentSchemaBuilder, SchemaNode> (tool) => builder => builder
+                                    .Object(_ => _
+                                        .Description(tool.Description)
+                                        .Property("function", _ => _.Const(tool.Name))
+                                        .Property("arguments", _ => _.Value(tool.ArgumentsType))
+                                    )
+                                ).ToArray()
+                            )
+                        )
                     )
                 )
             )
@@ -136,3 +190,16 @@ public record Line(int Number, string Text);
 public record Person(string Name, int Age);
 
 public record Organization(string Name, int Address);
+
+internal record ResearchActions(
+    ResearchAction[] Actions
+);
+
+internal record ResearchAction(
+    string Goal,
+    JsonElement Action
+);
+
+internal record ExampleArguments1(string Query);
+
+internal record ExampleArguments2(string DocumentName);

@@ -1,0 +1,81 @@
+﻿{
+  "type": "object",
+  "properties": {
+    "answer": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "Write markdown text.",
+            "properties": {
+              "$type": {
+                "type": "string",
+                "const": "text"
+              },
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "$type",
+              "content"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "Show a visually appearing widget.",
+            "properties": {
+              "$type": {
+                "type": "string",
+                "const": "widget"
+              },
+              "id": {
+                "type": "string",
+                "description": "Value form widgetId in context."
+              },
+              "comment": {
+                "type": "string",
+                "description": "A user-facing \u0060comment\u0060"
+              }
+            },
+            "required": [
+              "$type",
+              "id",
+              "comment"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "Add a reference to your statement.",
+            "properties": {
+              "$type": {
+                "type": "string",
+                "const": "citation"
+              },
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "description": "URL from context."
+              }
+            },
+            "required": [
+              "$type",
+              "title",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "answer"
+  ],
+  "additionalProperties": false
+}

@@ -173,6 +173,44 @@ public class FluentSchemaBuilderTests(ITestOutputHelper output) {
         Assert.NotNull(json);
         Helper.Assert(json);
     }
+
+
+    [Fact]
+    public void Test_array_anyof()
+    {
+        var generator = new DefaultSchemaGenerator();
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptionsSnakeCase);
+
+        var schema = generator.Build(options, _ => _
+            .Object(_ => _
+                .Property("answer", _ => _
+                    .Array(_ => _
+                        .AnyOf(
+                            _ => _.Object("Write markdown text.", _ => _
+                                .Property("$type", _ => _.Const("text"))
+                                .Property("content", _ => _.Value<string>())
+                            ),
+                            _ => _.Object("Show a visually appearing widget.", _ => _
+                                .Property("$type", _ => _.Const("widget"))
+                                .Property("id", "Value form widgetId in context.", _ => _.Value<string>())
+                                .Property("comment", "A user-facing `comment`", _ => _.Value<string>())
+                            ),
+                            _ => _.Object("Add a reference to your statement.", _ => _
+                                .Property("$type", _ => _.Const("citation"))
+                                .Property("title", _ => _.Value<string>())
+                                .Property("url", "URL from context.", _ => _.Value<string>())
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        var json = schema.ToJson();
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
 }
 
 public record FluentDocument(

@@ -16,6 +16,9 @@ public interface IFluentSchemaBuilder {
     SchemaNode Object<T>(string description, Action<IFluentObjectSchemaBuilder<T>> properties) where T : class;
     SchemaNode Object<T>(Action<IFluentObjectSchemaBuilder<T>> properties) where T : class;
 
+    SchemaNode Array(string description, Func<IFluentSchemaBuilder, SchemaNode> properties);
+    SchemaNode Array(Func<IFluentSchemaBuilder, SchemaNode> properties);
+
     SchemaNode Array<T>();
     SchemaNode Array<T>(string description);
     SchemaNode Array<T>(string description, Action<IFluentObjectSchemaBuilder<T>> properties) where T : class;

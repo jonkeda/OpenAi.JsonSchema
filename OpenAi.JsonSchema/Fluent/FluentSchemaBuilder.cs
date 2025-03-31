@@ -86,6 +86,20 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
         return node;
     }
 
+    public SchemaNode Array(string description, Func<IFluentSchemaBuilder, SchemaNode> items)
+    {
+        var itemsType = items(this);
+        return new SchemaArrayNode(itemsType) {
+            Description = description
+        };
+    }
+
+    public SchemaNode Array(Func<IFluentSchemaBuilder, SchemaNode> items)
+    {
+        var itemsType = items(this);
+        return new SchemaArrayNode(itemsType);
+    }
+
     public SchemaNode Array<T>()
     {
         return Schema(Resolve(typeof(T)));

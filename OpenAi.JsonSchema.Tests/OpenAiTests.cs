@@ -47,4 +47,18 @@ public class OpenAiTests(ITestOutputHelper output) {
         output.WriteLine(error.ToString());
         Helper.Assert($"{error.GetType().FullName}: {error.Message}");
     }
+
+
+    [Fact]
+    public void Test_JsonSchemaIgnore()
+    {
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptions);
+
+        var schema = Helper.Generate<DataNode>(options);
+
+        var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
 }

@@ -51,7 +51,13 @@ public class JsonType {
     }
 
     public IList<JsonPropertyType> Properties {
-        get { return _properties ??= _info.Properties.Select(_ => new JsonPropertyType(_resolver, this, _)).ToList(); }
+        get {
+            return _properties ??= _info
+                .Properties
+                .Where(_ => _.AttributeProvider?.GetCustomAttributes(typeof(JsonSchemaIgnoreAttribute), false) is not { Length: > 0 })
+                .Select(_ => new JsonPropertyType(_resolver, this, _))
+                .ToList();
+        }
     }
 
     public JsonType[]? PolymorphismOptions => _info.PolymorphismOptions is null ? _polymorphismOptions : _polymorphismOptions ??= CreatePolymorphismOptions().ToArray();

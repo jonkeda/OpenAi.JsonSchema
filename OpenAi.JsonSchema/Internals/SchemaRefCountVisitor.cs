@@ -17,7 +17,14 @@ internal class SchemaRefCountVisitor : SchemaVisitor {
     public override void Visit(SchemaRefNode schema)
     {
         schema.Ref.Count++;
-        if (_seen.Add(schema.Ref.Value)) {
+
+        // System.InvalidOperationException : Operations that change non-concurrent collections must have exclusive access. A concurrent update was performed on this collection and corrupted its state. The collection's state is no longer correct.
+        bool seen;
+        lock (_seen) {
+            seen = _seen.Add(schema.Ref.Value);
+        }
+
+        if (seen) {
             Visit(schema.Ref.Value);
         }
     }

@@ -13,10 +13,15 @@ public record SchemaEnumNode(string Type, string[] Values, bool Nullable) : Sche
     public static SchemaEnumNode Create(Type @enum, bool nullable, JsonSerializerOptions options)
     {
         var values = Enum.GetValues(@enum).Cast<object>().ToArray();
+        return Create(values, nullable, options);
+    }
 
+
+    public static SchemaEnumNode Create<T>(T[] values, bool nullable, JsonSerializerOptions options)
+    {
         var jsonValues = values.Select(value => JsonSerializer.Serialize(value, options)).ToArray();
 
-        var kind = jsonValues.Select(_ => JsonValue.Parse(_)!.GetValueKind()).FirstOrDefault();
+        var kind = jsonValues.Select(_ => JsonNode.Parse(_)!.GetValueKind()).FirstOrDefault();
         var type = kind switch {
             JsonValueKind.String => "string",
             JsonValueKind.Number => "integer",

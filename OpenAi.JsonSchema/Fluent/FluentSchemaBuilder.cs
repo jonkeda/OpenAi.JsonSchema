@@ -1,5 +1,6 @@
 ﻿using OpenAi.JsonSchema.Generator.Abstractions;
 using OpenAi.JsonSchema.Nodes;
+using System.Text.Json;
 
 
 namespace OpenAi.JsonSchema.Fluent;
@@ -43,6 +44,11 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
     public SchemaNode Value(Type type)
     {
         return Schema(Resolve(type));
+    }
+
+    public SchemaNode Enum<T>(T[] values, bool nullable = false)
+    {
+        return SchemaEnumNode.Create(values, nullable, context.Options.JsonSerializerOptions);
     }
 
     public SchemaNode Object(Action<IFluentObjectSchemaBuilder> properties)

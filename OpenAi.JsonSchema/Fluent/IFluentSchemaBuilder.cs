@@ -8,6 +8,8 @@ public interface IFluentSchemaBuilder {
     SchemaNode Value<T>();
     SchemaNode Value(Type type);
 
+    public SchemaNode Enum<T>(T[] values, bool nullable = false);
+
     SchemaNode Object(string description, Action<IFluentObjectSchemaBuilder> properties);
     SchemaNode Object(Action<IFluentObjectSchemaBuilder> properties);
 

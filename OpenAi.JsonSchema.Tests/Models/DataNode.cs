@@ -1,4 +1,7 @@
-﻿namespace OpenAi.JsonSchema.Tests.Models;
+﻿using System.Text.Json.Serialization;
+
+
+namespace OpenAi.JsonSchema.Tests.Models;
 
 public record DataNode(
     int Id,
@@ -13,3 +16,13 @@ public record NullalbeTypes(
     int[]? Numbers,
     DataNode? Object
 );
+
+public record ConstModeTest(Element Element);
+
+[JsonDerivedType(typeof(ElementText), "text")]
+[JsonDerivedType(typeof(ElementImage), "image")]
+public record Element();
+
+public record ElementText(string Text) : Element;
+
+public record ElementImage(string Src) : Element;

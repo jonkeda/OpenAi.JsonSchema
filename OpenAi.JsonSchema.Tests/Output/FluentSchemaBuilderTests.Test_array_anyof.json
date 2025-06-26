@@ -11,7 +11,9 @@
             "properties": {
               "$type": {
                 "type": "string",
-                "const": "text"
+                "enum": [
+                  "text"
+                ]
               },
               "content": {
                 "type": "string"
@@ -29,7 +31,9 @@
             "properties": {
               "$type": {
                 "type": "string",
-                "const": "widget"
+                "enum": [
+                  "widget"
+                ]
               },
               "id": {
                 "type": "string",
@@ -53,7 +57,9 @@
             "properties": {
               "$type": {
                 "type": "string",
-                "const": "citation"
+                "enum": [
+                  "citation"
+                ]
               },
               "title": {
                 "type": "string"

@@ -55,9 +55,16 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
     {
         var value = JsonSerializer.SerializeToNode(schema.Value, options.JsonSerializerOptions);
 
-        var node = new JsonObject {
-            ["type"] = schema.Type,
-            ["const"] = value
+        var node = options.ConstMode switch {
+            ConstMode.Default => new JsonObject {
+                ["type"] = schema.Type,
+                ["const"] = value
+            },
+            ConstMode.Enum => new JsonObject {
+                ["type"] = schema.Type,
+                ["enum"] = new JsonArray(value)
+            },
+            _ => throw new ArgumentOutOfRangeException(nameof(options.ConstMode), options.ConstMode, null)
         };
 
         AddDescription(node, schema.Description);

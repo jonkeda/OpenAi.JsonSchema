@@ -61,7 +61,9 @@
       "properties": {
         "type": {
           "type": "string",
-          "const": "meta"
+          "enum": [
+            "meta"
+          ]
         },
         "author": {
           "type": "string",

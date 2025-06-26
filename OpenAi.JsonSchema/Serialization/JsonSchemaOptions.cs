@@ -18,6 +18,7 @@ public class JsonSchemaOptions(JsonSerializerOptions? options = null) {
     public SchemaTransformer<SchemaNode>? Transformer { get; init; }
     public SchemaValidator? Validator { get; init; }
     public NullableMode NullableMode { get; init; }
+    public ConstMode ConstMode { get; init; }
 
     public JsonSchemaOptions(SchemaDefaults defaults, JsonSerializerOptions? options = null) : this(options)
     {
@@ -28,12 +29,18 @@ public class JsonSchemaOptions(JsonSerializerOptions? options = null) {
                 // based on: https://platform.openai.com/docs/guides/structured-outputs/supported-schemas
                 SchemaRootMode = SchemaRootMode.RootRecursion;
                 NullableMode = NullableMode.Nullable;
+                ConstMode = ConstMode.Enum;
                 FormatSupported = false;
                 PropertyRequired = (property, context) => true;
                 Validator = new OpenAiSchemaValidator();
                 break;
         }
     }
+}
+
+public enum ConstMode {
+    Default = 0,
+    Enum = 1,
 }
 
 public enum NullableMode {

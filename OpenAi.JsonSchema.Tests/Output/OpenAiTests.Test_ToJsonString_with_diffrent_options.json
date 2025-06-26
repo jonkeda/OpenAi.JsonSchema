@@ -34,7 +34,9 @@
       "properties": {
         "$type": {
           "type": "string",
-          "const": "child"
+          "enum": [
+            "child"
+          ]
         },
         "Name": {
           "type": "string"
@@ -85,7 +87,9 @@
       "properties": {
         "$type": {
           "type": "string",
-          "const": "step-child"
+          "enum": [
+            "step-child"
+          ]
         },
         "StepSiblings": {
           "type": "array",

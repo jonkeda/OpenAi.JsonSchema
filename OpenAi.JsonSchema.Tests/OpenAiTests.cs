@@ -89,4 +89,32 @@ public class OpenAiTests(ITestOutputHelper output) {
         Assert.NotNull(json);
         Helper.Assert(json);
     }
+
+
+    [Fact]
+    public void Test_ConstMode_Default()
+    {
+        var options = new JsonSchemaOptions(SchemaDefaults.Default, Helper.JsonOptions);
+
+        var schema = Helper.Generate<ConstModeTest>(options);
+
+        var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
+
+
+    [Fact]
+    public void Test_ConstMode_Enum()
+    {
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptions);
+
+        var schema = Helper.Generate<ConstModeTest>(options);
+
+        var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
 }

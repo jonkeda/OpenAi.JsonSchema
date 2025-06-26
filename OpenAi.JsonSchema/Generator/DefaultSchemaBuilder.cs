@@ -105,15 +105,12 @@ public class DefaultSchemaBuilder() : ISchemaBuilder {
         var elementType = type.ElementType ?? type.GenericTypeArguments[0];
 
         var schema = new SchemaArrayNode(
-            Items: BuildSchema(elementType, context)
+            Items: BuildSchema(elementType, context),
+            Nullable: type.Nullable is true
         );
 
         if (type.Type.GetCustomAttribute(typeof(DescriptionAttribute), inherit: false) is DescriptionAttribute description) {
             schema.Description = description.Description;
-        }
-
-        if (type.Nullable is true) {
-            return new SchemaAnyOfNode(new SchemaValueNode("null"), schema);
         }
 
         return schema;

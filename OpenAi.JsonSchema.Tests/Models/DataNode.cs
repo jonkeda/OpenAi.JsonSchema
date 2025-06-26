@@ -5,3 +5,11 @@ public record DataNode(
     string Name,
     [property: JsonSchemaIgnore] object Data
 );
+
+public record NullalbeTypes(
+    int? Id,
+    string? Name,
+    Status? Status,
+    int[]? Numbers,
+    DataNode? Object
+);

@@ -61,4 +61,32 @@ public class OpenAiTests(ITestOutputHelper output) {
         Assert.NotNull(json);
         Helper.Assert(json);
     }
+
+
+    [Fact]
+    public void Test_Nullable_Types()
+    {
+        var options = new JsonSchemaOptions(SchemaDefaults.OpenAi, Helper.JsonOptions);
+
+        var schema = Helper.Generate<NullalbeTypes>(options);
+
+        var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
+
+
+    [Fact]
+    public void Test_Nullable_Types_Default()
+    {
+        var options = new JsonSchemaOptions(SchemaDefaults.Default, Helper.JsonOptions);
+
+        var schema = Helper.Generate<NullalbeTypes>(options);
+
+        var json = schema.ToJsonNode().ToJsonString(new JsonSerializerOptions() { WriteIndented = true });
+        output.WriteLine(json);
+        Assert.NotNull(json);
+        Helper.Assert(json);
+    }
 }

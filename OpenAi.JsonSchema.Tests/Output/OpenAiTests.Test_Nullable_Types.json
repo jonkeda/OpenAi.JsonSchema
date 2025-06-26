@@ -1,0 +1,62 @@
+﻿{
+  "type": "object",
+  "properties": {
+    "Id": {
+      "type": "integer",
+      "nullable": true
+    },
+    "Name": {
+      "type": "string",
+      "nullable": true
+    },
+    "Status": {
+      "type": "integer",
+      "nullable": true,
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "Numbers": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "nullable": true
+    },
+    "Object": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "integer"
+            },
+            "Name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "Id",
+            "Name"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "Id",
+    "Name",
+    "Status",
+    "Numbers",
+    "Object"
+  ],
+  "additionalProperties": false
+}

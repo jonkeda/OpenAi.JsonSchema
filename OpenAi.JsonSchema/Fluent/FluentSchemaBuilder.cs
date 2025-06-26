@@ -95,7 +95,7 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
     public SchemaNode Array(string description, Func<IFluentSchemaBuilder, SchemaNode> items)
     {
         var itemsType = items(this);
-        return new SchemaArrayNode(itemsType) {
+        return new SchemaArrayNode(itemsType, Nullable: false) {
             Description = description
         };
     }
@@ -103,7 +103,7 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
     public SchemaNode Array(Func<IFluentSchemaBuilder, SchemaNode> items)
     {
         var itemsType = items(this);
-        return new SchemaArrayNode(itemsType);
+        return new SchemaArrayNode(itemsType, Nullable: false);
     }
 
     public SchemaNode Array<T>()
@@ -113,8 +113,9 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
 
     public SchemaNode Array<T>(string description)
     {
-        var items = Schema(Resolve(typeof(T)));
-        return new SchemaArrayNode(items) {
+        var type = Resolve(typeof(T));
+        var items = Schema(type);
+        return new SchemaArrayNode(items, Nullable: false) {
             Description = description
         };
     }
@@ -122,14 +123,17 @@ public class FluentSchemaBuilder(ISchemaBuilder builder, SchemaBuildContext cont
     public SchemaNode Array<T>(string description, Action<IFluentObjectSchemaBuilder<T>> properties) where T : class
     {
         var items = Object(properties);
-        return new SchemaArrayNode(items) {
+        return new SchemaArrayNode(items, Nullable: false) {
             Description = description
         };
     }
 
     public SchemaNode Array<T>(Action<IFluentObjectSchemaBuilder<T>> properties) where T : class
     {
-        return new SchemaArrayNode(Object(properties));
+        return new SchemaArrayNode(
+            Items: Object(properties),
+            Nullable: false
+        );
     }
 
     public SchemaNode AnyOf(params Func<IFluentSchemaBuilder, SchemaNode>[] values)

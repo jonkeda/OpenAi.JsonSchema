@@ -79,8 +79,17 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
     public override JsonNode Transform(SchemaValueNode schema)
     {
         var node = new JsonObject {
-            ["type"] = schema.Nullable ? new JsonArray([schema.Type, "null"]) : schema.Type,
+            ["type"] = schema.Type,
         };
+
+        if (schema.Nullable) {
+            if (options.NullableMode is NullableMode.Nullable) {
+                node["nullable"] = true;
+            }
+            else {
+                node["type"] = new JsonArray(schema.Type, "null");
+            }
+        }
 
         AddDescription(node, schema.Description);
 
@@ -90,9 +99,18 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
     public override JsonNode Transform(SchemaFormatNode schema)
     {
         var node = new JsonObject {
-            ["type"] = schema.Nullable ? new JsonArray([schema.Type, "null"]) : schema.Type,
+            ["type"] = schema.Type,
             ["format"] = JsonValue.Create(schema.Format)
         };
+
+        if (schema.Nullable) {
+            if (options.NullableMode is NullableMode.Nullable) {
+                node["nullable"] = true;
+            }
+            else {
+                node["type"] = new JsonArray(schema.Type, "null");
+            }
+        }
 
         AddDescription(node, schema.Description);
 
@@ -102,8 +120,17 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
     public override JsonNode Transform(SchemaEnumNode schema)
     {
         var node = new JsonObject {
-            ["type"] = schema.Nullable ? new JsonArray(schema.Type, "null") : schema.Type
+            ["type"] = schema.Type
         };
+
+        if (schema.Nullable) {
+            if (options.NullableMode is NullableMode.Nullable) {
+                node["nullable"] = true;
+            }
+            else {
+                node["type"] = new JsonArray(schema.Type, "null");
+            }
+        }
 
         AddDescription(node, schema.Description);
 
@@ -120,7 +147,19 @@ internal class SchemaSerializer(JsonSchemaOptions options) : SchemaTransformer<J
 
         AddDescription(node, schema.Description);
 
-        node["items"] = Transform(schema.Items);
+        if (schema.Nullable && options.NullableMode is NullableMode.Nullable) {
+            node["items"] = Transform(schema.Items);
+            node["nullable"] = true;
+        }
+        else {
+            node["items"] = Transform(schema.Items);
+        }
+
+        if (schema.Nullable && options.NullableMode is NullableMode.Default) {
+            node = new JsonObject {
+                ["anyOf"] = new JsonArray(Transform(new SchemaValueNode("null")), node),
+            };
+        }
 
         return node;
     }

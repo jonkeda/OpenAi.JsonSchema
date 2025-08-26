@@ -19,12 +19,12 @@ public class AutoPolymorphismJsonTypeInfoResolverTests
             .UseAutoInterfacePolymorphism("type");
 
         // Act
-        var info = options.TypeInfoResolver?.GetTypeInfo(typeof(IAnimal), options);
+        var info = options.TypeInfoResolver.GetTypeInfo(typeof(IAnimal), options);
 
         // Assert
         Assert.NotNull(info);
-        Assert.NotNull(info.PolymorphismOptions);
-        Assert.Equal("type", info.PolymorphismOptions.TypeDiscriminatorPropertyName);
+        Assert.NotNull(info!.PolymorphismOptions);
+        Assert.Equal("type", info.PolymorphismOptions!.TypeDiscriminatorPropertyName);
 
         var derived = info.PolymorphismOptions.DerivedTypes;
         Assert.Contains(derived, d => d.DerivedType == typeof(Dog) && (string?)d.TypeDiscriminator == "Dog");

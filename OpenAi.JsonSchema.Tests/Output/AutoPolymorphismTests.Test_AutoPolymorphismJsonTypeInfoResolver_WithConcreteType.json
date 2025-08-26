@@ -1,0 +1,1 @@
+﻿{"type":"object","properties":{"name":{"type":"string"},"radius":{"type":"number"}},"required":["name","radius"],"additionalProperties":false}

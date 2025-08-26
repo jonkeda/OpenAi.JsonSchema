@@ -1,6 +1,6 @@
 # Automatic interface polymorphism (opt-in)
 
-If you want interfaces to be handled automatically without adding `[JsonDerivedType]` attributes, enable an opt-in resolver that scans only the interface's assembly and registers all concrete implementations. The discriminator will be emitted as a property named `type` by default.
+If you want interfaces to be handled automatically without adding `[JsonDerivedType]` attributes, enable an opt-in resolver that scans only the interface’s assembly and registers all concrete implementations. The discriminator will be emitted as a property named `type` by default.
 
 ```csharp
 using System.Text.Json;
@@ -21,6 +21,6 @@ var schema = generator.Generate(typeof(IShape), jsonOptions);
 ```
 
 Notes:
-- Only the interface's own assembly is scanned.
+- Only the interface’s own assembly is scanned.
 - No additional filtering is applied.
-- The discriminator property name defaults to `type`, but you can override it via `UseAutoInterfacePolymorphism("type")`.
+- The discriminator property name defaults to `type`, but you can override it via `UseAutoInterfacePolymorphism("type")`. 
